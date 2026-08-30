@@ -59,3 +59,9 @@ node scripts/test-program.mjs
 
 This first edition has no wallet, identity ledger, tracking, automatic curation service, or payout claims.
 
+## Playback repair — pairings 2 and 3
+
+Transformers now queues the three full More Than Meets the Eye episodes directly from Hasbro Pulse. Ghostbusters queues Ghosts R Us and Mr. Sandman, Dream Me a Dream from Throwback Toons. These explicit video queues replace the two previous cartoon playlist dependencies. The same albums remain, with replacement primary playlists and an alternate album-source button. The repair adds separate Start cartoon and Start music controls, and permits Start both when either player is ready. Pairings 1 and 4 retain their media sources.
+
+All five cartoon video titles and publishers were checked through oEmbed. Regression tests and the portable build pass. This does not establish the exact cause of the reported device failures or verify complete album/embedded playback; a viewing check is still needed. No clips are downloaded or cut.
+

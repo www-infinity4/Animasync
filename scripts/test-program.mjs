@@ -23,3 +23,12 @@ for(const p of program){
 }
 console.log("PASS: four unique pairings, decade ranges, looping playlists, muted cartoons, explicit start, and single-video fallback URLs.");
 
+for(const p of program.slice(1,3)){
+ assert.ok(p.cartoonVideos.length>=2);
+ assert.equal(p.cartoonList,undefined);
+ const u=new URL(embedURL(undefined,p.video,"https://example.com",true,p.cartoonVideos));
+ assert.equal(u.searchParams.get("list"),null);
+ assert.equal(u.searchParams.get("playlist"),p.cartoonVideos.join(","));
+ assert.ok(p.albumBackup&&p.albumBackup!==p.albumList);
+}
+console.log("PASS: pairings 2 and 3 use explicit full-episode queues and alternative album sources.");
