@@ -1,0 +1,1 @@
+Built-in image-generation tool. Landscape social card for Animasync. Exact title: ANIMASYNC. Supporting text: 1980S PICTURE. 1990S SOUND.. Original cinematic collage with film and vinyl imagery, bold typography and generous safe margins. Asset: assets/share-preview-v1.png.

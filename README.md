@@ -65,3 +65,6 @@ Transformers now queues the three full More Than Meets the Eye episodes directly
 
 All five cartoon video titles and publishers were checked through oEmbed. Regression tests and the portable build pass. This does not establish the exact cause of the reported device failures or verify complete album/embedded playback; a viewing check is still needed. No clips are downloaded or cut.
 
+
+## Sharing and unified wallet
+A shared wallet bar offers native sharing, copy-link fallback, and an X post composer. Confirmed sharing earns 0.1 StarCoin once per site per wallet. Opening a composer or copying a link alone earns nothing; manual confirmation is self-reported. Credits use the same browser-local wallet as StarQuest’s unified-wallet integration, not its separate cloud ledger. Pending claims retry on return. Social preview metadata is in index.html and the card is assets/share-preview-v1.png.
