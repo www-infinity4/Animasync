@@ -43,8 +43,8 @@ function Theater({item}:{item:typeof program[number]}){
  return()=>{active=false;timers.forEach(clearTimeout);players.current.forEach(p=>{try{p?.destroy();}catch{}});players.current=[null,null];};
  },[origin,reload,single,backup,item]);
  function command(fn:(p:Player,i:number)=>void){players.current.forEach((p,i)=>{if(p&&ready[i])try{fn(p,i);}catch{setMessage("A player is not responding. Use its own controls or reload players.");}});}
- function start(){command((p,i)=>{if(i===0)p.mute();else{p.unMute();p.setVolume(80);}p.playVideo();});setMessage("Start requested. Indicators show actual player states. Ads or buffering can put the players out of step.");}
- function restart(){command((p,i)=>{if(i===0&&(single||(!item.cartoonList&&!item.cartoonVideos?.length)))p.seekTo(0,true);else p.playVideoAt(0);if(i===0)p.mute();else p.unMute();p.playVideo();});setMessage("Restart requested from the opening episode and first album track.");}
+ function start(){command((p,i)=>{if(i===0)p.mute();else{p.unMute();p.setVolume(80);}p.playVideo();});setMessage("Start requested. Indicators show actual player states. If an ad or buffering shifts the pairing, use Re-sync from start.");}
+ function restart(){command((p,i)=>{if(i===0&&(single||(!item.cartoonList&&!item.cartoonVideos?.length)))p.seekTo(0,true);else p.playVideoAt(0);if(i===0)p.mute();else p.unMute();p.playVideo();});setMessage("Re-sync requested: opening episode and first album track restarted together.");}
  return <>
  <div className="now"><div><p className="eyebrow">NOW SELECTED / {item.year}</p><h2>{item.title}</h2></div><span className="tag">FULL EPISODES · NO CLIP CUTS</span></div>
  <div className="decks">
@@ -58,7 +58,7 @@ function Theater({item}:{item:typeof program[number]}){
  <div className="deck-label"><span>02 / SOUND</span><span>{states[1]} · repeat</span></div>
  <div className="album-info"><p className="eyebrow">{item.artist} / {item.albumYear}</p><h3>{item.album}</h3><p>{item.note}</p></div>
  <div className="music frame-holder" key={"music-"+reload+"-"+single+"-"+backup}>{origin&&<iframe ref={el=>{frames.current[1]=el;}} src={embedURL(albumList,undefined,origin,false)} title={item.artist+" "+item.album+" full album player"} allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/>}</div>
- <div className="deck-foot"><Button className="small-button" variant="outline" disabled={!ready[1]} onClick={()=>{try{players.current[1]?.nextVideo();}catch{setMessage("Use the album player's next button.");}}}>Next song →</Button><a href={"https://www.youtube.com/playlist?list="+albumList} target="_blank" rel="noreferrer">Album source ↗</a></div>
+ <div className="deck-foot"><Button className="small-button" variant="outline" disabled={!ready[1]} onClick={()=>{try{players.current[1]?.nextVideo();setMessage("Next song requested. Use Re-sync from start if you want the shared opening point again.");}catch{setMessage("Use the album player's next button.");}}}>Next song →</Button><a href={"https://www.youtube.com/playlist?list="+albumList} target="_blank" rel="noreferrer">Album source ↗</a></div>
  {errors[1]&&<p className="error" role="alert">{errors[1]}</p>}
  </section>
  </div>
@@ -67,8 +67,8 @@ function Theater({item}:{item:typeof program[number]}){
  <Button variant="outline" onClick={()=>{command(p=>p.pauseVideo());setMessage("Pause requested for both players.");}}>Pause both</Button>
  <Button variant="outline" disabled={!ready[0]} onClick={()=>command((p,i)=>{if(i===0){p.mute();p.playVideo();}})}>Start cartoon</Button>
  <Button variant="outline" disabled={!ready[1]} onClick={()=>command((p,i)=>{if(i===1){p.unMute();p.setVolume(80);p.playVideo();}})}>Start music</Button>
- <Button variant="outline" disabled={!ready.every(Boolean)} onClick={restart}>Restart pairing</Button></div>
- <p role="status">{message}</p><div className="recovery">
+ <Button variant="outline" disabled={!ready.every(Boolean)} onClick={restart}>↻ Re-sync from start</Button></div>
+ <p role="status">{message}</p><p role="note">YouTube advertising remains inside the source players. Re-sync restores the pairing after ads or network delays without bypassing advertising.</p><div className="recovery">
  <Button variant="ghost" onClick={()=>{command(p=>p.pauseVideo());setReload(n=>n+1);setMessage("Reloading both players. Press Start both when ready.");}}>Reload players</Button>
  {(item.cartoonList||item.cartoonVideos?.length)&&<Button variant="ghost" onClick={()=>{command(p=>p.pauseVideo());setSingle(v=>!v);setMessage("Source changed. Press Start both when ready.");}}>{single?"Restore episode playlist":"Try opening episode only"}</Button>}
  {item.albumBackup&&<Button variant="ghost" onClick={()=>{command(p=>p.pauseVideo());setBackup(v=>!v);setMessage("Album source changed; press Start both to resume.");}}>{backup?"Use primary album source":"Try alternate album source"}</Button>}
@@ -81,7 +81,6 @@ export default function Home(){
  <section className="intro"><div><p className="eyebrow">THE ALTERNATIVE CARTOON CLUB / VOL. 01</p><h1>Same cartoons.<br/><em>Different frequency.</em></h1></div><p>Four animated worlds. Four full albums.<br/>Pick a pairing, press play, and let them meet.</p></section>
  <nav className="program" aria-label="Choose a cartoon and album">{program.map((item,i)=><Button key={item.title} className={"program-card "+(selected===i?"selected":"")} variant="outline" onClick={()=>setSelected(i)} aria-pressed={selected===i}><span className="number">0{i+1}</span><span><strong>{item.short}</strong><small>{item.artist} / {item.album}</small></span><span className="choice">{selected===i?"●":"↗"}</span></Button>)}</nav>
  <Theater key={selected} item={program[selected]}/>
- <footer><strong>ANIMASYNC / Infinity ®</strong><p>Curated pairings, not frame-locked edits. Albums repeat; episode playlists continue. YouTube availability, ads, and device playback rules still apply. Some albums contain explicit lyrics.</p><span>80s × 90s</span></footer>
+ <footer><strong>ANIMASYNC / Infinity ®</strong><p>Curated pairings, not frame-locked edits. Albums repeat; episode playlists continue. If ads or buffering shift timing, use Re-sync from start. Some albums contain explicit lyrics.</p><span>80s × 90s</span></footer>
  </main>;
 }
-
